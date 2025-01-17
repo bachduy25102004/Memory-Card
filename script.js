@@ -2,7 +2,7 @@ const img = ["img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg", "img5.jpg", "img6.j
 const gridContainer = document.querySelector('#grid-container');
 const grid = [['', '', '', ''], ['', '', '', ''], ['', '', '', '']];
 const imgList = [ ...img, ...img ];
-console.log(imgList);
+// console.log(imgList);
 
 
 // for (let i = 0; i < img.length; i++) {
@@ -21,7 +21,7 @@ for (let i = 0; i < grid.length; i++) {
 grid.forEach((row, rowID) => {
     row.forEach((card, cardID) => {
         const index = cardID + (rowID * 4);
-        console.log(index);
+        // console.log(index);
         
         const divCard = document.createElement('div');
         const imgBack = document.createElement('img');
@@ -35,7 +35,7 @@ grid.forEach((row, rowID) => {
         divBack.className = 'card-container-back';
         // div.id
         //  = (rowID + 1)*(cardID + 1);
-        console.log(Math.floor(index/4), index%4);
+        // console.log(Math.floor(index/4), index%4);
         
         // console.log(grid[index / 4][index % 4]);
         
@@ -84,7 +84,7 @@ const cardsArray = document.querySelectorAll('.card-container');
 // let firstClick ;
 let twoCardsClick = false;
 let clicked = [];
-
+const alreadyFlipped = [];
 for (let i = 0; i < cardsArray.length; i++) {
     
     cardsArray[i].addEventListener('click', () => {
@@ -99,18 +99,26 @@ for (let i = 0; i < cardsArray.length; i++) {
         }
         
         if (clicked.length === 0) {
+            if (!alreadyFlipped.includes(cardsArray[i])) {
+               
+                
             // clicked++;
             clicked.push(cardsArray[i]); 
+            console.log("push1");
             console.log(clicked[0]);
+            }
             
             // return;
         };
 
         if (clicked.length === 1) {
             if (cardsArray[i].id !== clicked[0].id) {
+                if (!alreadyFlipped.includes(cardsArray[i])) {
+                    console.log('push2');
+                    
                 clicked.push(cardsArray[i]);
                 console.log(clicked[1]);
-                
+                }
             };
         };
        
@@ -141,8 +149,8 @@ for (let i = 0; i < cardsArray.length; i++) {
         if (twoCardsClick) {
             // console.log('1 : ' + clicked[0].);
             // console.log('2 : ' + clicked[1].src);
-            console.log(clicked[0].children[1].children[0].src);
-            console.log(clicked[1].children[1].children[0].src);
+            // console.log(clicked[0].children[1].children[0].src);
+            // console.log(clicked[1].children[1].children[0].src);
 
             const firstClickImg = clicked[0].querySelector('#pic');
             // console.log(img1);
@@ -161,6 +169,7 @@ for (let i = 0; i < cardsArray.length; i++) {
                 setTimeout(() => {
                     clicked[0].classList.remove('rotate');
                     clicked[1].classList.remove('rotate');
+                    
                     // clicked[0].children[0].src = 'card.png';
                     // clicked[1].children[0].src = 'card.png';
                     // clicked[0].classList.add('rotate');
@@ -171,6 +180,8 @@ for (let i = 0; i < cardsArray.length; i++) {
 
                 }, 1000);
             } else {
+                alreadyFlipped.push(clicked[0]);
+                alreadyFlipped.push(clicked[1]);
                 twoCardsClick = false;
                     clicked = [];
             }
