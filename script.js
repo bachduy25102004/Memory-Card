@@ -18,20 +18,23 @@ for (let i = 0; i < grid.length; i++) {
     }
 }
 
-grid.forEach(row => {
-    row.forEach(card => {
+grid.forEach((row, rowID) => {
+    row.forEach((card, cardID) => {
         const div = document.createElement('div');
         const img = document.createElement('img');
         img.src = 'card.png';
         // img.style.width = '100px';
         div.append(img);
         div.className = 'card-container';
+        // div.id
+        //  = (rowID + 1)*(cardID + 1);
+        div.id = `${rowID} - ${cardID}`;
         gridContainer.appendChild(div);
     })
 });
 
-let twoCardsClick = false;
-let clicked = 0;
+
+
 
 const cardsArray = document.querySelectorAll('.card-container');
 
@@ -59,41 +62,90 @@ const cardsArray = document.querySelectorAll('.card-container');
 //         };
 //     });
 // });
-let firstClick ;
+// let firstClick ;
+let twoCardsClick = false;
+let clicked = [];
+
 for (let i = 0; i < cardsArray.length; i++) {
+    
     cardsArray[i].addEventListener('click', () => {
             // console.log(card);
             // console.log(index);
         const img = cardsArray[i].children[0];
-        img.src = grid[Math.floor(i/4)][i%4];
-        clicked++;
-        console.log(clicked);
-        console.log('click on ' +  i);
-        
-        
-        
-        if (clicked === 1) {
-            firstClick = cardsArray[i];
-            console.log(firstClick);
-            
+        cardsArray[i].classList.add('rotate')
+        if (clicked.length !== 2) {
+            img.src = grid[Math.floor(i/4)][i%4];
         }
-
+        
+        if (clicked.length === 0) {
+            // clicked++;
+            clicked.push(cardsArray[i]); 
+            console.log(clicked[0]);
             
-        if (clicked === 2) {
-            twoCardsClick = !twoCardsClick;
-            clicked = 0;
+            // return;
         };
-        const firstImg = firstClick.children[0];
-        console.log(twoCardsClick);
-        if (twoCardsClick == true) {
-            if (firstImg.src != img.src) {
-                setTimeout(() => {
+
+        if (clicked.length === 1) {
+            if (cardsArray[i].id !== clicked[0].id) {
+                clicked.push(cardsArray[i]);
+                console.log(clicked[1]);
                 
-                firstImg.src = 'card.png';
-                img.src = 'card.png';
+            };
+        };
+       
+        // console.log(clicked);
+        // console.log('click on ' +  i);
+        
+        
+        
+       
+
+        // if (clicked === 1) {
+        //     if (firstClick.id != cardsArray[i].id) {
+        //         clicked++;
+        //     }
+        // }
+        // firstClick.disabled = true;
+            
+        if (clicked.length === 2) {
+            twoCardsClick = true;
+            // clicked = [];
+        };
+        // const firstImg = firstClick.children[0];
+        // console.log(twoCardsClick);
+
+        console.log("selected cards:", clicked);
+        
+
+        if (twoCardsClick) {
+            // console.log('1 : ' + clicked[0].);
+            // console.log('2 : ' + clicked[1].src);
+
+            if (clicked[0].children[0].src !== clicked[1].children[0].src) {
+                console.log('not the same');
+
+                // console.log(clicked[0].children[0].src);
+                // console.log(clicked[1].children[0].src);
+
+                // clicked[0].children[0].src = 'card.png'
+
+                
+                
+                setTimeout(() => {
+                    
+                    clicked[0].children[0].src = 'card.png';
+                    clicked[1].children[0].src = 'card.png';
+                    twoCardsClick = false;
+                    clicked = [];
+                    // twoCardsClick = false;
+
+                }, 1000);
+            } else {
                 twoCardsClick = false;
-                }, 2000);
+                    clicked = [];
             }
+            
+            
         };
     });
     
