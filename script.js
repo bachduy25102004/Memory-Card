@@ -20,16 +20,35 @@ for (let i = 0; i < grid.length; i++) {
 
 grid.forEach((row, rowID) => {
     row.forEach((card, cardID) => {
-        const div = document.createElement('div');
-        const img = document.createElement('img');
-        img.src = 'card.png';
+        const index = cardID + (rowID * 4);
+        console.log(index);
+        
+        const divCard = document.createElement('div');
+        const imgBack = document.createElement('img');
+        const imgFront = document.createElement('img');
+        const divBack = document.createElement('div');
+        const divFront = document.createElement('div');
+
+        imgBack.src = 'card.png';
         // img.style.width = '100px';
-        div.append(img);
-        div.className = 'card-container';
+        divBack.append(imgBack);
+        divBack.className = 'card-container-back';
         // div.id
         //  = (rowID + 1)*(cardID + 1);
-        div.id = `${rowID} - ${cardID}`;
-        gridContainer.appendChild(div);
+        console.log(Math.floor(index/4), index%4);
+        
+        // console.log(grid[index / 4][index % 4]);
+        
+        imgFront.src = grid[Math.floor(index / 4)][index % 4];
+        divFront.append(imgFront);
+        divFront.className = 'card-container-front';
+        divFront.id = 'pic';
+        divCard.append(divBack);
+        divCard.append(divFront);
+
+        divCard.id = `${rowID} - ${cardID}`;
+        divCard.className = 'card-container';
+        gridContainer.appendChild(divCard);
     })
 });
 
@@ -71,10 +90,12 @@ for (let i = 0; i < cardsArray.length; i++) {
     cardsArray[i].addEventListener('click', () => {
             // console.log(card);
             // console.log(index);
-        const img = cardsArray[i].children[0];
-        cardsArray[i].classList.add('rotate')
+        // const img = cardsArray[i].children[0];
+        // cardsArray[i].classList.add('rotate')
         if (clicked.length !== 2) {
-            img.src = grid[Math.floor(i/4)][i%4];
+            // img.src = grid[Math.floor(i/4)][i%4];
+            cardsArray[i].classList.add('rotate');
+            
         }
         
         if (clicked.length === 0) {
@@ -120,8 +141,14 @@ for (let i = 0; i < cardsArray.length; i++) {
         if (twoCardsClick) {
             // console.log('1 : ' + clicked[0].);
             // console.log('2 : ' + clicked[1].src);
+            console.log(clicked[0].children[1].children[0].src);
+            console.log(clicked[1].children[1].children[0].src);
 
-            if (clicked[0].children[0].src !== clicked[1].children[0].src) {
+            const firstClickImg = clicked[0].querySelector('#pic');
+            // console.log(img1);
+            const secondClickImg = clicked[1].querySelector('#pic');
+            if (clicked[0].children[1].children[0].src !== clicked[1].children[1].children[0].src) {
+                
                 console.log('not the same');
 
                 // console.log(clicked[0].children[0].src);
@@ -132,9 +159,12 @@ for (let i = 0; i < cardsArray.length; i++) {
                 
                 
                 setTimeout(() => {
-                    
-                    clicked[0].children[0].src = 'card.png';
-                    clicked[1].children[0].src = 'card.png';
+                    clicked[0].classList.remove('rotate');
+                    clicked[1].classList.remove('rotate');
+                    // clicked[0].children[0].src = 'card.png';
+                    // clicked[1].children[0].src = 'card.png';
+                    // clicked[0].classList.add('rotate');
+                    // clicked[1].classList.add('rotate');
                     twoCardsClick = false;
                     clicked = [];
                     // twoCardsClick = false;
